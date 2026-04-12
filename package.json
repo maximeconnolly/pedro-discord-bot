@@ -10,7 +10,7 @@
     "dev": "node --watch src/index.js",
     "migrate": "node src/db/migrate.js",
     "register": "node src/bot/registerCommands.js",
-    "test": "node --test test",
+    "test": "node --test 'test/**/*.test.js'",
     "lint": "eslint src test"
   },
   "engines": {
