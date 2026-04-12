@@ -1,0 +1,28 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: raccoon
+      POSTGRES_PASSWORD: raccoon
+      POSTGRES_DB: raccoon
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U raccoon -d raccoon"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  bot:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://raccoon:raccoon@postgres:5432/raccoon
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  pgdata:
